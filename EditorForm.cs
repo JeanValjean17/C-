@@ -934,7 +934,6 @@ namespace CADImportNetDemos.CADEditorDemo
             this.miSaveAsDXF.Enabled = false;
             this.miSaveAsDXF.Index = 2;
             this.miSaveAsDXF.Text = "Save as DXF...";
-            this.miSaveAsDXF.Click += new System.EventHandler(this.miSaveAsDXF_Click);
             // 
             // miSerializeEntities
             // 
@@ -954,7 +953,6 @@ namespace CADImportNetDemos.CADEditorDemo
             this.miPrint.Enabled = false;
             this.miPrint.Index = 5;
             this.miPrint.Text = "Print ";
-            this.miPrint.Click += new System.EventHandler(this.miPrint_Click);
             // 
             // miPrintCustom
             // 
@@ -968,14 +966,12 @@ namespace CADImportNetDemos.CADEditorDemo
             this.miPrintPreview.Enabled = false;
             this.miPrintPreview.Index = 7;
             this.miPrintPreview.Text = "Print Preview...";
-            this.miPrintPreview.Click += new System.EventHandler(this.miPrintPreview_Click);
             // 
             // miClose
             // 
             this.miClose.Enabled = false;
             this.miClose.Index = 8;
             this.miClose.Text = "Close";
-            this.miClose.Click += new System.EventHandler(this.miClose_Click);
             // 
             // miSep1
             // 
@@ -986,7 +982,6 @@ namespace CADImportNetDemos.CADEditorDemo
             // 
             this.miExit.Index = 10;
             this.miExit.Text = "Exit";
-            this.miExit.Click += new System.EventHandler(this.miExit_Click);
             // 
             // miEdit
             // 
@@ -1006,7 +1001,6 @@ namespace CADImportNetDemos.CADEditorDemo
             this.miCopyAsBMP.Enabled = false;
             this.miCopyAsBMP.Index = 0;
             this.miCopyAsBMP.Text = "Copy as BMP";
-            this.miCopyAsBMP.Click += new System.EventHandler(this.miCopyAsBMP_Click);
             // 
             // miUndo
             // 
@@ -1169,7 +1163,6 @@ namespace CADImportNetDemos.CADEditorDemo
             // 
             this.miSHXFontsPaths.Index = 7;
             this.miSHXFontsPaths.Text = "SHX Fonts";
-            this.miSHXFontsPaths.Click += new System.EventHandler(this.miSHXFontsPaths_Click);
             // 
             // miOptions
             // 
@@ -3153,41 +3146,6 @@ namespace CADImportNetDemos.CADEditorDemo
 			LoadFile(true);
 		}
 
-		private void miExit_Click(object sender, System.EventArgs e)
-		{
-			Close();
-		}
-
-		private void miSaveAsDXF_Click(object sender, System.EventArgs e)
-		{
-			if(this.cadImage == null) 
-				return;
-			if(this.saveDXFDlg.ShowDialog() != DialogResult.OK) 
-				return;
-			SaveAsDXF(this.saveDXFDlg.FileName);
-		}
-
-		private void SaveAsDXF(string fName)
-		{
-			#region Export
-#if Export
-			if(cadImage == null) return;
-			if(cadImage is CADRasterImage) 
-			{
-				return;
-			}
-			CADImport.Export.DirectCADtoDXF.CADtoDXF vExp = new CADImport.Export.DirectCADtoDXF.CADtoDXF(cadImage);
-			vExp.SaveToFile(fName);
-#else
-				MessageBox.Show("Not supported in current version!", "CAD .NET");
-#endif
-			#endregion Export			
-		}
-
-		private void miSHXFontsPaths_Click(object sender, System.EventArgs e)
-		{
-			shxFrm.ShowDialog();
-		}
 
 		private void propGrid_PropertyValueChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e)
 		{
@@ -3206,28 +3164,7 @@ namespace CADImportNetDemos.CADEditorDemo
 			CADImportFace.DecodeEntity(e.Node, cadImage, this.cadPictBox, this.ImageScale);
 		}
 
-		private void miPrint_Click(object sender, System.EventArgs e)
-		{
-			cadImage.Print(true, true, null);
-		}
-
-		private void miClose_Click(object sender, System.EventArgs e)
-		{
-			CloseFile();
-			this.ChangeControlState();
-		}
-
-		private void miPrintPreview_Click(object sender, System.EventArgs e)
-		{
-            this.prtForm.TypePage = DrawingSize.Fit;
-            printPrevDlg.Document = prtForm.Print(false);
-            printPrevDlg.ShowDialog();
-            if (printPrevDlg.Document != null)
-                printPrevDlg.Document.Dispose();
-        }
-
-		
-
+	
         private void SaveImageAsFormat(string filename, ImageFormat format)
         {
             DRect tmpRect;
@@ -3296,12 +3233,6 @@ namespace CADImportNetDemos.CADEditorDemo
         }
 
 
-
-		private void miCopyAsBMP_Click(object sender, System.EventArgs e)
-		{
-			this.PutToClipboard();
-		}
-
 		private void PutToClipboard()
 		{
 			if(this.clipRectangle.Enabled)
@@ -3316,16 +3247,7 @@ namespace CADImportNetDemos.CADEditorDemo
 			}
 		}
 
-		#region Help
-		/// <summary>
-		/// Shows or hides a panel that contains the entities tree.
-		/// </summary>
-		#endregion Help
-		public void ChangeTreeVisiblity(bool val)
-		{			
-			this.spltPictBox.Visible = val;
-			DoResize();
-		}
+	
 
 		private void miEntitiesTree_Click(object sender, System.EventArgs e)
 		{
